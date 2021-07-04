@@ -5,16 +5,16 @@ This repository containts an Ethereum DApp that demonstrates a Supply Chain flow
 ## Project write-up - UML
 
 ### Activity
-![Activity](UML/activity-diagram.jpg)
+![Activity](UML/activity-diagram.png)
 
 ### Sequence
-![Sequence](UML/sequence-diagram.jpg)
+![Sequence](UML/sequence-diagram.png)
 
 ### State
-![State](UML/state-diagram.jpg)
+![State](UML/state-diagram.png)
 
 ### Classes (Data Model)
-![Data-Model](UML/data-model-diagram.jpg)
+![Data-Model](UML/data-model-diagram.png)
 
 ## Project write-up - Libraries
 The `Roles` library was used by different access control contracts for easy add and remove in the supply chain 
@@ -221,6 +221,6 @@ to make the web faster, safer, and more open.
 * IPFS
 
 ## Licensing, Authors
-I would like to thank Udacity for creating a platform to learn and upscale my data science skills. 
+I would like to thank Udacity for creating a platform to learn and upscale my blockchain skills. 
 [https://www.bilginkocak.com/](https://www.bilginkocak.com/)enter link description here
 

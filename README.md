@@ -222,5 +222,6 @@ to make the web faster, safer, and more open.
 
 ## Licensing, Authors
 I would like to thank Udacity for creating a platform to learn and upscale my blockchain skills. 
-[https://www.bilginkocak.com/](https://www.bilginkocak.com/)enter link description here
+
+[https://www.bilginkocak.com/](https://www.bilginkocak.com/)
 

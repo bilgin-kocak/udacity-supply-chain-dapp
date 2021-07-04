@@ -1,7 +1,8 @@
-pragma solidity >=0.4.24;
+pragma solidity ^0.4.24;
 
 // Import the library 'Roles'
 import "./Roles.sol";
+
 // Define a contract 'FarmerRole' to manage this role - add, remove, check
 contract FarmerRole {
   using Roles for Roles.Role;
@@ -20,7 +21,7 @@ contract FarmerRole {
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
   modifier onlyFarmer() {
-    require(isFarmer(msg.sender), "Caller is not a farmer");
+    require(isFarmer(msg.sender));
     _;
   }
 

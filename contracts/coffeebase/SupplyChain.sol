@@ -1,321 +1,10 @@
 pragma solidity >=0.4.24;
 
-//import "../coffeecore/Ownable.sol";
-//import "../coffeeaccesscontrol/FarmerRole.sol";
-//import "../coffeeaccesscontrol/DistributorRole.sol";
-//import "../coffeeaccesscontrol/RetailerRole.sol";
-//import "../coffeeaccesscontrol/ConsumerRole.sol";
-
-pragma solidity >=0.4.24;
-
-pragma solidity >=0.4.24;
-/**
- * @title Roles
- * @dev Library for managing addresses assigned to a Role.
- */
-library Roles {
-  struct Role {
-    mapping (address => bool) bearer;
-  }
-
-  /**
-   * @dev give an account access to this role
-   */
-  function add(Role storage role, address account) internal {
-    require(account != address(0), "verify account");
-    require(!has(role, account), "verify account has the role");
-
-    role.bearer[account] = true;
-  }
-
-  /**
-   * @dev remove an account's access to this role
-   */
-  function remove(Role storage role, address account) internal {
-    require(account != address(0), "verify account");
-    require(has(role, account), "verify account has the role");
-
-    role.bearer[account] = false;
-  }
-
-  /**
-   * @dev check if an account has this role
-   * @return bool
-   */
-  function has(Role storage role, address account)
-    internal
-    view
-    returns (bool)
-  {
-    require(account != address(0), "Account is not verified");
-    return role.bearer[account];
-  }
-}
-
-// Import the library 'Roles'
-// Define a contract 'ConsumerRole' to manage this role - add, remove, check
-contract ConsumerRole {
-  using Roles for Roles.Role;
-
-  // Define 2 events, one for Adding, and other for Removing
-  event ConsumerAdded(address indexed account);
-  event ConsumerRemoved(address indexed account);
-
-
-  // Define a struct 'consumers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private consumers;
-
-
-  // In the constructor make the address that deploys this contract the 1st consumer
-  constructor() public {
-      _addConsumer(msg.sender);
-  }
-
-  // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyConsumer() {
-    require(isConsumer(msg.sender), "Caller is not a consumer.");
-    _;
-  }
-
-  // Define a function 'isConsumer' to check this role
-  function isConsumer(address account) public view returns (bool) {
-    return consumers.has(account);
-  }
-
-  // Define a function 'addConsumer' that adds this role
-  function addConsumer(address account) public onlyConsumer {
-    _addConsumer(account);
-  }
-
-  // Define a function 'renounceConsumer' to renounce this role
-  function renounceConsumer() public {
-    _removeConsumer(msg.sender);
-  }
-
-  // Define an internal function '_addConsumer' to add this role, called by 'addConsumer'
-  function _addConsumer(address account) internal {
-    consumers.add(account);
-    emit ConsumerAdded(account);
-  }
-
-  // Define an internal function '_removeConsumer' to remove this role, called by 'removeConsumer'
-  function _removeConsumer(address account) internal {
-    consumers.remove(account);
-    emit ConsumerRemoved(account);
-  }
-}
-
-pragma solidity >=0.4.24;
-
-// Import the library 'Roles'
-// Define a contract 'DistributorRole' to manage this role - add, remove, check
-contract DistributorRole {
-  using Roles for Roles.Role;
-
-  // Define 2 events, one for Adding, and other for Removing
-  event DistributorAdded(address indexed account);
-  event DistributorRemoved(address indexed account);
-
-  // Define a struct 'distributors' by inheriting from 'Roles' library, struct Role
-  Roles.Role private distributors;
-
-  // In the constructor make the address that deploys this contract the 1st distributor
-  constructor() public {
-    _addDistributor(msg.sender);
-  }
-
-  // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyDistributor() {
-   require(isDistributor(msg.sender), "Caller is not a distributor.");
-    _;
-  }
-
-  // Define a function 'isDistributor' to check this role
-  function isDistributor(address account) public view returns (bool) {
-    return distributors.has(account);
-  }
-
-  // Define a function 'addDistributor' that adds this role
-  function addDistributor(address account) public onlyDistributor {
-    _addDistributor(account);
-  }
-
-  // Define a function 'renounceDistributor' to renounce this role
-  function renounceDistributor() public {
-    _removeDistributor(msg.sender);
-  }
-
-  // Define an internal function '_addDistributor' to add this role, called by 'addDistributor'
-  function _addDistributor(address account) internal {
-    distributors.add(account);
-    emit DistributorAdded(account);
-  }
-
-  // Define an internal function '_removeDistributor' to remove this role, called by 'removeDistributor'
-  function _removeDistributor(address account) internal {
-    distributors.remove(account);
-    emit DistributorRemoved(account);
-  }
-}
-
-pragma solidity >=0.4.24;
-
-// Import the library 'Roles'
-// Define a contract 'FarmerRole' to manage this role - add, remove, check
-contract FarmerRole {
-  using Roles for Roles.Role;
-
-  // Define 2 events, one for Adding, and other for Removing
-  event FarmerAdded(address indexed account);
-  event FarmerRemoved(address indexed account);
-
-  // Define a struct 'farmers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private farmers;
-
-  // In the constructor make the address that deploys this contract the 1st farmer
-  constructor() public {
-    _addFarmer(msg.sender);
-  }
-
-  // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyFarmer() {
-    require(isFarmer(msg.sender), "Caller is not a farmer");
-    _;
-  }
-
-  // Define a function 'isFarmer' to check this role
-  function isFarmer(address account) public view returns (bool) {
-    return farmers.has(account);
-  }
-
-  // Define a function 'addFarmer' that adds this role
-  function addFarmer(address account) public onlyFarmer {
-    _addFarmer(account);
-  }
-
-  // Define a function 'renounceFarmer' to renounce this role
-  function renounceFarmer() public {
-    _removeFarmer(msg.sender);
-  }
-
-  // Define an internal function '_addFarmer' to add this role, called by 'addFarmer'
-  function _addFarmer(address account) internal {
-    farmers.add(account);
-    emit FarmerAdded(account);
-  }
-
-  // Define an internal function '_removeFarmer' to remove this role, called by 'removeFarmer'
-  function _removeFarmer(address account) internal {
-    farmers.remove(account);
-    emit FarmerRemoved(account);
-  }
-}
-
-pragma solidity >=0.4.24;
-
-// Import the library 'Roles'
-// Define a contract 'RetailerRole' to manage this role - add, remove, check
-contract RetailerRole {
-  using Roles for Roles.Role;
-
-  // Define 2 events, one for Adding, and other for Removing
-  event RetailerAdded(address indexed account);
-  event RetailerRemoved(address indexed account);
-
-  // Define a struct 'retailers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private retailers;
-
-
-  // In the constructor make the address that deploys this contract the 1st retailer
-  constructor() public {
-    _addRetailer(msg.sender);
-  }
-
-  // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyRetailer() {
-    require(isRetailer(msg.sender), "Caller is not a retailer.");
-    _;
-  }
-
-  // Define a function 'isRetailer' to check this role
-  function isRetailer(address account) public view returns (bool) {
-    return retailers.has(account);
-  }
-
-  // Define a function 'addRetailer' that adds this role
-  function addRetailer(address account) public onlyRetailer {
-    _addRetailer(account);
-  }
-
-  // Define a function 'renounceRetailer' to renounce this role
-  function renounceRetailer() public {
-    _removeRetailer(msg.sender);
-  }
-
-  // Define an internal function '_addRetailer' to add this role, called by 'addRetailer'
-  function _addRetailer(address account) internal {
-    retailers.add(account);
-    emit RetailerAdded(account);
-  }
-
-  // Define an internal function '_removeRetailer' to remove this role, called by 'removeRetailer'
-  function _removeRetailer(address account) internal {
-    retailers.remove(account);
-    emit RetailerRemoved(account);
-  }
-}
-
-
-pragma solidity >=0.4.24;
-
-/// Provides basic authorization control
-contract Ownable {
-    address private origOwner;
-
-    // Define an Event
-    event TransferOwnership(address indexed oldOwner, address indexed newOwner);
-
-    /// Assign the contract to an owner
-    constructor () internal {
-        origOwner = msg.sender;
-        emit TransferOwnership(address(0), origOwner);
-    }
-
-    /// Look up the address of the owner
-    function owner() public view returns (address) {
-        return origOwner;
-    }
-
-    /// Define a function modifier 'onlyOwner'
-    modifier onlyOwner() {
-        require(isOwner(), "not owner");
-        _;
-    }
-
-    /// Check if the calling address is the owner of the contract
-    function isOwner() public view returns (bool) {
-        return msg.sender == origOwner;
-    }
-
-    /// Define a function to renounce ownerhip
-    function renounceOwnership() public onlyOwner {
-        emit TransferOwnership(origOwner, address(0));
-        origOwner = address(0);
-    }
-
-    /// Define a public function to transfer ownership
-    function transferOwnership(address newOwner) public onlyOwner {
-        _transferOwnership(newOwner);
-    }
-
-    /// Define an internal function to transfer ownership
-    function _transferOwnership(address newOwner) internal {
-        require(newOwner != address(0), "not valid address");
-        emit TransferOwnership(origOwner, newOwner);
-        origOwner = newOwner;
-    }
-}
-
+import "../coffeecore/Ownable.sol";
+import "../coffeeaccesscontrol/FarmerRole.sol";
+import "../coffeeaccesscontrol/DistributorRole.sol";
+import "../coffeeaccesscontrol/RetailerRole.sol";
+import "../coffeeaccesscontrol/ConsumerRole.sol";
 
 // Define a contract 'Supplychain'
 contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
@@ -459,11 +148,11 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   function harvestItem(
     uint _upc,
     address _originFarmerID,
-    string _originFarmName,
-    string _originFarmInformation,
-    string  _originFarmLatitude,
-    string  _originFarmLongitude,
-    string  _productNotes)
+    string memory _originFarmName,
+    string memory _originFarmInformation,
+    string memory _originFarmLatitude,
+    string memory _originFarmLongitude,
+    string memory _productNotes)
     public
     onlyFarmer
   {
@@ -616,10 +305,10 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   uint    itemUPC,
   address ownerID,
   address originFarmerID,
-  string  originFarmName,
-  string  originFarmInformation,
-  string  originFarmLatitude,
-  string  originFarmLongitude
+  string memory originFarmName,
+  string memory originFarmInformation,
+  string memory originFarmLatitude,
+  string memory originFarmLongitude
   )
   {
   // Assign values to the 8 parameters
@@ -650,7 +339,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
   uint    itemSKU,
   uint    itemUPC,
   uint    productID,
-  string  productNotes,
+  string memory productNotes,
   uint    productPrice,
   uint    itemState,
   address distributorID,
